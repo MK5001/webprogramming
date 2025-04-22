@@ -1,25 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Memory Game</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="styles.css">  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="dist/game.js" defer></script>
 </head>
 <body>
     <div class="container">
         <h1 class="text-center my-4">Memory Game</h1>
-        <div class="row justify-content-center my-4">
-            <div class="d-flex align-items-center">
-                <!-- Buttons and Input will go here -->
-            </div>
+        <div id="startbutton" class="container" style="display: block;">
+            <label for="pair-count">Enter Number of Pairs:</label>
+            <input id="pair-count" type="number" class="form-control mb-3" style="width: auto; display: inline-block;" min="1" max="8" placeholder="Enter a number (1-8)">
+            <button class="btn btn-primary" onclick="startgame()">Start Game</button>
         </div>
-        <div id="game-board" class="row justify-content-center"></div>
-        <div id="score-board" class="row justify-content-center my-4"></div>
-    </div>  
-    <script type="module" src="dist/index.js"></script>
-
-</div>
+        <div id="theme-selector" class="text-center my-4">
+            <label for="theme">Select Theme:</label>
+            <select id="theme" class="form-control" style="width: auto; display: inline-block;">
+                <option value="fruits">Fruits</option>
+                <option value="animals">Animals</option>
+                <option value="numbers">Numbers</option>
+            </select>
+        </div>
+        <div id="game-board" class="row justify-content-center" style="display: none;"></div>
+        <div id="scoreboard" class="text-center my-4" style="display: none;">
+            <h3>Scoreboard</h3>
+            <p id="player-turn"></p>
+            <ul id="player-scores" class="list-unstyled"></ul>
+        </div>
+        <div id="completion-message" class="text-center my-4" style="display: none;">
+            <h2>Congratulations! You've matched all pairs!
+                To play again, click the button below.</h2>
+            <button class="btn btn-primary" onclick="restartgame()">Play Again</button>
+        </div>
+        <div id="end-game-summary" class="text-center my-4" style="display: none;">
+            <h2>Game Over!</h2>
+            <p id="final-scores"></p>
+            <button class="btn btn-primary" onclick="restartgame()">Play Again</button>
+        </div>
+    </div>
 </body>
 </html>

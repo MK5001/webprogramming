@@ -1,0 +1,21 @@
+export function renderQuestion(question, callback) {
+    const questionElement = document.getElementById("question");
+    const optionsElement = document.getElementById("options");
+    // Sicherstellen, dass die DOM-Elemente existieren
+    if (!questionElement || !optionsElement) {
+        console.error("❌ Frage oder Optionen-Elemente nicht gefunden!");
+        return;
+    }
+    // Frage und Optionen rendern
+    console.log("📝 Frage:", question.question);
+    console.log("📝 Optionen:", question.options);
+    // Die Frage und die Schwierigkeit anzeigen
+    questionElement.innerHTML = `<h3>${question.question}</h3><p><strong>Schwierigkeit: ${question.difficulty}</strong></p>`;
+    optionsElement.innerHTML = question.options
+        .map((option) => `<button class='option-btn'>${option}</button>`)
+        .join(" ");
+    // Event-Listener für die Optionen
+    document.querySelectorAll(".option-btn").forEach((btn) => {
+        btn.addEventListener("click", () => callback(btn.textContent || ""));
+    });
+}

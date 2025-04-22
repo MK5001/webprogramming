@@ -1,0 +1,98 @@
+#quiz-container {
+    display: none;
+  }
+  
+  #quiz-container.show {
+    display: block !important;
+  }
+  
+body{
+  background-color:white;
+}
+
+/* Grundstil für den Button */
+.btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #333; /* Dunkle Hintergrundfarbe */
+  color: #fff; /* Weiße Schriftfarbe */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Schattierung für 3D-Effekt */
+}
+
+/* Hover-Effekt */
+.btn:hover {
+  background-color: #555; /* Etwas hellere Hintergrundfarbe */
+  transform: translateY(-2px); /* Button leicht anheben */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Stärkerer Schatten beim Hover */
+}
+
+/* Active-Effekt für gedrückte Buttons */
+.btn:active {
+  background-color: #222; /* Dunklere Farbe beim Drücken */
+  transform: translateY(0); /* Button wieder in seine ursprüngliche Position */
+  box-shadow: none; /* Schatten entfernen */
+}
+
+/* Zusätzliche stilistische Anpassungen für den Button mit einer speziellen Klasse */
+.btn.mt-2 {
+  margin-top: 10px; /* Abstand nach oben für vertikale Trennung */
+}
+/* Stil für die Option-Buttons */
+.option-btn {
+  padding: 8px 16px; /* Weniger Polsterung, damit die Buttons kompakter sind */
+  font-size: 14px; /* Kleinere Schriftgröße */
+  font-weight: normal; /* Weniger auffällig, kein fetter Text */
+  text-align: center;
+  border: 1px solid #ddd; /* Dezente graue Umrandung */
+  border-radius: 4px; /* Leicht abgerundete Ecken */
+  background-color: #f4f4f4; /* Helles Grau für den Hintergrund */
+  color: #333; /* Dunkelgraue Schriftfarbe für besseren Kontrast */
+  cursor: pointer;
+  transition: all 0.2s ease; /* Sanfter Übergang bei Hover */
+  margin: 5px; /* Etwas Abstand zwischen den Buttons */
+}
+
+/* Hover-Effekt */
+.option-btn:hover {
+  background-color: #e0e0e0; /* Etwas dunkleres Grau beim Hover */
+  border-color: #bbb; /* Etwas dunklerer Rand */
+  transform: translateY(-2px); /* Leichtes Anheben beim Hover */
+}
+
+/* Active-Effekt für gedrückte Buttons */
+.option-btn:active {
+  background-color: #ccc; /* Noch dunkleres Grau beim Drücken */
+  border-color: #aaa; /* Dunklerer Rand */
+  transform: translateY(0); /* Button zurück an seine ursprüngliche Position */
+}
+
+
+/* Stil für den "Spiel neu starten" Button */
+#refresh-game-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #4CAF50; /* Grüner Hintergrund */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+/* Hover-Effekt für den Button */
+#refresh-game-btn:hover {
+  background-color: #45a049; /* Etwas dunkleres Grün beim Hover */
+}
+
+/* Active-Effekt für den Button */
+#refresh-game-btn:active {
+  background-color: #3e8e41; /* Noch dunkleres Grün beim Klicken */
+}

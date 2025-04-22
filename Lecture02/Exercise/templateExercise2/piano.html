@@ -20,17 +20,74 @@
             <li class="list-inline-item"><strong>H</strong> - A</li>
             <li class="list-inline-item"><strong>J</strong> - B</li>
         </ul>
-        <div id="piano" class="d-flex justify-content-center">
-            <!-- Piano keys with IDs for JavaScript interaction -->
-            <div class="key" id="keyC">C</div>
-            <div class="key" id="keyD">D</div>
-            <div class="key" id="keyE">E</div>
-            <div class="key" id="keyF">F</div>
-            <div class="key" id="keyG">G</div>
-            <div class="key" id="keyA">A</div>
-            <div class="key" id="keyB">B</div>
+        <ul class="list-inline">
+            <li class="list-inline-item"><strong>W</strong> - C#</li>
+            <li class="list-inline-item"><strong>E</strong> - D#</li>
+            <li class="list-inline-item"><strong>T</strong> - F#</li>
+            <li class="list-inline-item"><strong>Z</strong> - G#</li>
+            <li class="list-inline-item"><strong>U</strong> - A#</li>
+        </ul>
+        <div id="piano" class="d-flex justify-content-center position-relative">
+            <!-- keys -->
+            <button class="key" id="keyA">C</button>
+            <button class="key black" id="keyW">C#</button>
+            <button class="key" id="keyS">D</button>
+            <button class="key black" id="keyE">D#</button>
+            <button class="key" id="keyD">E</button>
+            <button class="key" id="keyF">F</button>
+            <button class="key black" id="keyT">F#</button>
+            <button class="key" id="keyG">G</button>
+            <button class="key black" id="keyZ">G#</button>
+            <button class="key" id="keyH">A</button>
+            <button class="key black" id="keyU">A#</button>
+            <button class="key" id="keyJ">B</button>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script>
+        // Array of keys mit den jeweiligen Noten 
+        const keys = [
+            { id: 'keyA', note: 'C' },
+            { id: 'keyS', note: 'D' },
+            { id: 'keyD', note: 'E' },
+            { id: 'keyF', note: 'F' },
+            { id: 'keyG', note: 'G' },
+            { id: 'keyH', note: 'A' },
+            { id: 'keyJ', note: 'B' },
+            { id: 'keyW', note: 'C#' },
+            { id: 'keyE', note: 'D#' },
+            { id: 'keyT', note: 'F#' },
+            { id: 'keyZ', note: 'G#' },
+            { id: 'keyU', note: 'A#' }
+        ];
+        // Play sound function
+        function playSound(note) {
+            const encodedNote = note.replace('#', '%23'); // Encode # to %23, weil # ist ein special character in URL(daher findet er den Pfad nicht)
+            const audioPath = `sounds/${encodedNote}.mp3`;
+            console.log("Playing:", note, "from", audioPath);
+            let audio = new Audio(audioPath);
+            audio.play().catch(error => {
+                console.error("Error playing sound:", error);
+            });
+        }
+        // Event listeners, welcher beim keydown aufgerufen wird und die Note spielt
+        document.addEventListener('keydown', (event) => {
+            const key = keys.find(k => k.id === `key${event.key.toUpperCase()}`);
+            if (key) {
+                console.log(`Key pressed: ${event.key.toUpperCase()}, Note: ${key.note}`);
+                playSound(key.note);
+            } else { // Wenn der Key nicht in der keys-Liste ist
+                console.log(`Key pressed: ${event.key.toUpperCase()} not mapped to any note.`);
+            }
+        });
+
+        // Event listeners, welcher beim click aufgerufen wird und die Note spielt
+        document.querySelectorAll('.key').forEach(key => {
+            key.addEventListener('click', () => {
+                const note = keys.find(k => k.id === key.id).note;
+                console.log(`Key clicked: ${key.id}, Note: ${note}`);
+                playSound(note);
+            });
+        });
+    </script>
 </body>
 </html>

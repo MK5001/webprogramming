@@ -1,0 +1,12 @@
+#quiz-container {
+    display: none;
+  }
+  
+  #quiz-container.show {
+    display: block !important;
+  }
+  
+body{
+  background-color:green;
+}
+

@@ -1,28 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Multiple Choice Quiz</title>
+  <title>Quiz Application</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <div class="container mt-5">
-    <div id="player-input" class="mb-4">
+    <div id="player-input" class="mb-4" style="display: block;">
       <!-- Place the player name input here -->
-    </div>
-    <div id="quiz-container" class="card" style="display: none;">
-      <div class="card-body">
-        <h1 class="card-title text-center">Quiz</h1>
-        <!-- Place the question, the options and the results here -->
+      <h1 class="text-center">Welcome to the Quiz!</h1>
+      <div class="form-group">
+        <label for="player-name">Enter your name:</label>
+        <input type="text" id="player-name" class="form-control" placeholder="Your Name" required>
+        <button type="button" id="submit-name" class="btn btn-primary mt-2">Submit</button>
+      </div>
+
+      <div id="quiz-container" class="card" style="display: none;">
+        <div class="card-body">
+          <h1 class="card-title text-center">Quiz</h1>
+          <div id="question" class="mb-4"></div>
+          <div id="options" class="mb-4"></div>
+          <div id="progress" class="mb-4"></div>
+          <div id="score" class="mb-4"></div>
+        </div>
+      </div>
+      <div id="leaderboard" class="mt-5" style="display: none;">
+        <h2>Leaderboard</h2>
+        <!-- Place the leaderboard list here -->
+
       </div>
     </div>
-    <div id="leaderboard" class="mt-5">
-      <h2>Leaderboard</h2>
-      <!-- Place the leaderboard list here -->
-    </div>
-  </div>
-  <script type="module" src="dist/main.js"></script>
+    <script type="module" src="./dist/main.js"></script>
+    <script type="module" src="./dist/modules/questions.js"></script>
+    <script type="module" src="./dist/modules/scoring.js"></script>
+    <script type="module" src="./dist/modules/ui.js"></script>
 </body>
+
 </html>

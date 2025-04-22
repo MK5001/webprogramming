@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multiple Choice Quiz</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container mt-5">
+    <!-- Spielername eingeben -->
+    <div id="player-input" class="mb-4">
+      <h2>Wie viele Spieler?</h2>
+      <select id="player-count" class="form-control mb-3">
+        <option value="">--Spielerzahl--</option>
+        <option value="1">1 Spieler</option>
+        <option value="2">2 Spieler</option>
+        <option value="3">3 Spieler</option>
+        <option value="4">4 Spieler</option>
+      </select>
+      <button id="start-quiz" class="btn btn-dark mt-3">Start Quiz</button>
+    </div>
+
+    <div id="name-inputs"></div>
+
+    <!--
+    <div id="player-input" class="mb-4">
+      <h2>Gib deinen Namen ein</h2>
+      <input type="text" id="player-name" class="form-control" placeholder="Dein Name" />
+      <button id="start-quiz" class="btn btn-primary mt-3">Start Quiz</button>
+    </div> 
+    -->
+    <div id="quiz-container" class="card" style="display: none;">
+      <div class="card-body">
+        <h1 class="card-title text-center">Quiz</h1>
+        <div id="currentPlayerDisplay" class="mt-3 font-weight-bold"><h1></h1></div> <!-- Hier wird der Name des Spielers der am Zug ist angezeigt -->
+        <div id="question"></div> <!-- Hier wird die Frage angezeigt -->
+        <div id="options"></div> <!-- Hier werden die Optionen angezeigt -->
+        <div id="feedback" class="mt-3 font-weight-bold"></div> <!-- Feedback -->
+      </div>
+    </div>
+
+    <div id="leaderboard" class="mt-5">
+
+      <!-- Place the leaderboard list here -->
+      <div id="leaderboard" class="mt-5">
+        <h2>Leaderboard</h2>
+        <ul id="leaderboard-list"></ul>
+        <button id="download-json-btn" class="btn btn-dark mt-2" style="display: none;">Highscore als JSON speichern</button>
+      </div>
+    </div>
+
+  </div>
+  <script type="module" src="dist/main.js"></script>
+</body>
+
+</html>

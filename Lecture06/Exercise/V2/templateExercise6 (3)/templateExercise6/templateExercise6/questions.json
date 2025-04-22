@@ -1,0 +1,198 @@
+[
+  {
+    "category": "Math",
+    "question": "Was ist 2 * 0?",
+    "options": [0, 0.1, 0.2, -0.1 ],
+    "answer": 0,
+    "difficulty": "easy"
+  },
+  {
+    "category": "Math",
+    "question": "Was ist 5 + 5?",
+    "options": [10, 3, 5, 7],
+    "answer": 10,
+    "difficulty": "easy"
+  },
+  {
+    "category": "Math",
+    "question": "Was ist 5 * 5?",
+    "options": [30, 25, 20, 18],
+    "answer": 25,
+    "difficulty": "easy"
+  },
+  {
+    "category": "Math",
+    "question": "Was ist 15 + 9?",
+    "options": [15, 24, 22, 30],
+    "answer": 24,
+    "difficulty": "medium"
+  },
+  {
+    "category": "Math",
+    "question": "Was ist 40 / 2?",
+    "options": [22, 2, 4, 20],
+    "answer": 20,
+    "difficulty": "medium"
+  },
+  {
+    "category": "Math",
+    "question": "Was ist 879 - 79?",
+    "options": [5, 1000, 940, 721, 800],
+    "answer": 800,
+    "difficulty": "medium"
+  },
+  {
+    "category": "Math",
+    "question": "Was ist 60/100?",
+    "options": [0.2, 0.4, 0.6, 0.7],
+    "answer": 0.6,
+    "difficulty": "hard"
+  },
+  {
+    "category": "Math",
+    "question": "Was ist 8 - 1?",
+    "options": [7, 3, 1, 9],
+    "answer": 7,
+    "difficulty": "hard"
+  },
+  {
+    "category": "Math",
+    "question": "Was ist 11 * 12?",
+    "options": [122, 111, 133, 132],
+    "answer": 132,
+    "difficulty": "hard"
+  },
+  {
+    "category": "Math",
+    "question": "Was ist 2 * 2 * 3 * 10?",
+    "options": [110, 120, 150],
+    "answer": 120,
+    "difficulty": "hard"
+  },
+
+
+  {
+    "category": "Geography",
+    "question": "Auf welchem Kontinent liegt Argentinien?",
+    "options": ["Sued-Amerika", "Europa", "Asien", "Nord-Amerika", "Afrika", "Australien"],
+    "answer": "Sued-Amerika",
+    "difficulty": "easy"
+  },
+  {
+    "category": "Geography",
+    "question": "Auf welchem Kontinent liegt Österreich?",
+    "options": ["Sued-Amerika", "Europa", "Asien", "Nord-Amerika", "Afrika", "Australien"],
+    "answer": "Europa",
+    "difficulty": "easy"
+  },
+  {
+    "category": "Geography",
+    "question": "Auf welchem Kontinent liegt Australien?",
+    "options": ["Sued-Amerika", "Europa", "Asien", "Nord-Amerika", "Afrika", "Australien"],
+    "answer": "Australien",
+    "difficulty": "easy"
+  },
+  {
+    "category": "Geography",
+    "question": "Auf welchem Kontinent liegt China?",
+    "options": ["Sued-Amerika", "Europa", "Asien", "Nord-Amerika", "Afrika", "Australien"],
+    "answer": "Asien",
+    "difficulty": "medium"
+  },
+  {
+    "category": "Geography",
+    "question": "Auf welchem Kontinent liegt Ägypten?",
+    "options": ["Sued-Amerika", "Europa", "Asien", "Nord-Amerika", "Afrika", "Australien"],
+    "answer": "Afrika",
+    "difficulty": "medium"
+  },
+  {
+    "category": "Geography",
+    "question": "Auf welchem Kontinent liegt Kanada?",
+    "options": ["Sued-Amerika", "Europa", "Asien", "Nord-Amerika", "Afrika", "Australien"],
+    "answer": "Nord-Amerika",
+    "difficulty": "medium"
+  },
+  {
+    "category": "Geography",
+    "question": "Auf welchem Kontinent liegt Uruguay?",
+    "options": ["Sued-Amerika", "Europa", "Asien", "Nord-Amerika", "Afrika", "Australien"],
+    "answer": "Sued-Amerika",
+    "difficulty": "hard"
+  },
+  {
+    "category": "Geography",
+    "question": "Auf welchem Kontinent liegt Tansania?",
+    "options": ["Sued-Amerika", "Europa", "Asien", "Nord-Amerika", "Afrika", "Australien"],
+    "answer": "Afrika",
+    "difficulty": "hard"
+  },
+
+
+
+
+  {
+    "category": "Sports",
+    "question": "Was ist der Weltrekord im Sprint?",
+    "options": ["9.58s", "10.32s", "12.82s"],
+    "answer": "Muhammad Ali",
+    "difficulty": "easy"
+  },
+  {
+    "category": "Sports",
+    "question": "Wie viele Spieler hat eine Fussballmannschaft",
+    "options": [9, 10, 11],
+    "answer": 11,
+    "difficulty": "easy"
+  },
+  {
+    "category": "Sports",
+    "question": "Darf der Torhüter im Handball seinen Torraum verlassen?",
+    "options": ["Ja", "Nein", "Nur in gewissen fällen"],
+    "answer": "Ja",
+    "difficulty": "medium"
+  },
+ 
+  {
+    "category": "Sports",
+    "question": "Bekommt man mehr Punkte im Basketball wenn man von hinter der Mittellinie trifft?",
+    "options": ["Ja", "Nein", "Nur wenn man es ohne hinzusehen macht"],
+    "answer": "Nein",
+    "difficulty": "medium"
+  },
+  {
+    "category": "Sports",
+    "question": "Wofür ist die Eckfahne im Fußball vorrangig da?",
+    "options": ["Zur Orientierung für Schiedsrichter", "Weil man dann besser sieht wo der Ball ins Out gegangen ist", "Vögel verscheuchen"],
+    "answer": "Weil man dann besser sieht wo der Ball ins Out gegangen ist",
+    "difficulty": "medium"
+  },
+  {
+    "category": "Sports",
+    "question": "Darf man beim Volleyball das Netz berühren?",
+    "options": ["Ja","Nein"],
+    "answer": "Nein",
+    "difficulty": "medium"
+  },
+  {
+    "category": "Sports",
+    "question": "Wie oft darf man im Tennis insgesamt aufschlagen ein Fehl-Aufschlag geschieht?",
+    "options": [1, 2, 3, 4, 5],
+    "answer": 2,
+    "difficulty": "hard"
+  },
+  {
+    "category": "Sports",
+    "question": "Was passiert wenn bei einem Aufschlag im Tischtennis der Ball das Netz streift?",
+    "options": ["Der Aufschlag wird wiederholt", "Aufschlagfehler, Punkt für andere/n Spieler/in", "Man muss €5 bezahlen"],
+    "answer": "Der Aufschlag wird wiederholt",
+    "difficulty": "hard"
+  }, 
+  {
+    "category": "Sports",
+    "question": "Muss ein Schifahrer jedes Tor durchfahren, oder darf er eine gewisse Zahl an Toren überpspringen?",
+    "options": ["Jedes Tor muss durchlaufen werden", "Er darf 1 Tor verpassen", "Er darf 2 Tore verpassen", "Er darf maximal 3 Tore verpassen"],
+    "answer": "Jedes Tor muss durchlaufen werden",
+    "difficulty": "hard"
+  }
+]

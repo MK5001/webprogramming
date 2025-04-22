@@ -13,40 +13,56 @@
         <h1>Virtual Piano</h1>
         <p>Press the following keys to play the notes:</p>
         <ul class="list-inline">
-            <li class="list-inline-item key-spacing">
-                <i class="bi bi-keyboard"></i> <strong>A</strong> - C
-            </li>
-            <li class="list-inline-item key-spacing">
-                <i class="bi bi-keyboard"></i> <strong>S</strong> - D
-            </li>
-            <li class="list-inline-item key-spacing">
-                <i class="bi bi-keyboard"></i> <strong>D</strong> - E
-            </li>
-            <li class="list-inline-item key-spacing">
-                <i class="bi bi-keyboard"></i> <strong>F</strong> - F
-            </li>
-            <li class="list-inline-item key-spacing">
-                <i class="bi bi-keyboard"></i> <strong>G</strong> - G
-            </li>
-            <li class="list-inline-item key-spacing">
-                <i class="bi bi-keyboard"></i> <strong>H</strong> - A
-            </li>
-            <li class="list-inline-item key-spacing">
-                <i class="bi bi-keyboard"></i> <strong>J</strong> - B
-            </li>
+            <li class="list-inline-item"><strong>A</strong> - C</li>
+            <li class="list-inline-item"><strong>S</strong> - D</li>
+            <li class="list-inline-item"><strong>D</strong> - E</li>
+            <li class="list-inline-item"><strong>F</strong> - F</li>
+            <li class="list-inline-item"><strong>G</strong> - G</li>
+            <li class="list-inline-item"><strong>H</strong> - A</li>
+            <li class="list-inline-item"><strong>J</strong> - B</li>
         </ul>
-        <div id="piano" class="d-flex justify-content-center">
-            <!-- Piano keys with IDs for JavaScript interaction -->
-            <div class="key" id="keyC">C</div>
-            <div class="key" id="keyD">D</div>
-            <div class="key" id="keyE">E</div>
-            <div class="key" id="keyF">F</div>
-            <div class="key" id="keyG">G</div>
-            <div class="key" id="keyA">A</div>
-            <div class="key" id="keyB">B</div>
+        <ul class="list-inline">
+            <li class="list-inline-item"><strong>W</strong> - C#</li>
+            <li class="list-inline-item"><strong>E</strong> - D#</li>
+            <li class="list-inline-item"><strong>T</strong> - F#</li>
+            <li class="list-inline-item"><strong>Z</strong> - G#</li>
+            <li class="list-inline-item"><strong>U</strong> - A#</li>
+        </ul>
+
+        <!-- Play Song Buttons -->
+        <div id="song" class="mt-5">
+            <button class="btn btn-primary" id="playSong1">Play Song 1</button>
+            <button class="btn btn-primary" id="playSong2">Play Song 2</button>
+            <button class="btn btn-primary" id="playSong3">Play Song 3</button>
+            <button class="btn btn-danger" id="stop" style="display: none;">Stop Song</button>
+            <button class="btn btn-danger" id="reset" style="display: none;">Reset</button>
+            <div id="notesContainer" class="d-flex justify-content-center mt-3">
+                <!-- Noten werden hier angezeigt -->
+            </div>
         </div>
-        <button id="reset-notes" class="btn btn-danger mt-2">Reset Note Line</button>
+
+        <!-- Piano -->
+        <div id="piano" class="d-flex justify-content-center position-relative">
+            <!-- keys -->
+            <button class="key" id="keyA">C</button>
+            <button class="key black" id="keyW">C#</button>
+            <button class="key" id="keyS">D</button>
+            <button class="key black" id="keyE">D#</button>
+            <button class="key" id="keyD">E</button>
+            <button class="key" id="keyF">F</button>
+            <button class="key black" id="keyT">F#</button>
+            <button class="key" id="keyG">G</button>
+            <button class="key black" id="keyZ">G#</button>
+            <button class="key" id="keyH">A</button>
+            <button class="key black" id="keyU">A#</button>
+            <button class="key" id="keyJ">B</button>    
+        </div>
     </div>
-    <script src="dist/script.js"></script>
+
+    <script src="./dist/piano.js"></script>   
+    
 </body>
 </html>
+
+
+<!-- Zum Richtigen aufrufen: http://localhost/WEB_2/webprogramming/Lecture05/Exercise/templateExercise5/piano.html -->

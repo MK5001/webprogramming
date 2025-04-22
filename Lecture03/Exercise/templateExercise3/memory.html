@@ -10,10 +10,82 @@
 <body>
     <div class="container">
         <h1 class="text-center my-4">Memory Game</h1>
-        <div id="game-board" class="row justify-content-center">
-            <!-- Card elements will go here -->
+        <div id="startbutton" class="container" style="display: block;">
+            <button class="btn btn-primary" onclick="startgame()">Start Game</button>
         </div>
+        <div id="game-board" class="row justify-content-center" style="display: none;"></div>
+        <div id="completion-message" class="text-center my-4" style="display: none;">
+            <h2>Congratulations! You've matched all pairs!
+                To play again, click the button below.</h2>
+            <button class="btn btn-primary" onclick="restartgame()">Play Again</button>
+        </div> 
     </div>
-    <script src="script.js"></script>
+    <script>
+        let flippedCards = [];  // Array to store the flipped cards
+        let cardSymbols = ['🍎', '🍎', '🍌', '🍌', '🍇', '🍇', '🍒', '🍒',]; // Array mit den Symbolen
+        let matchedPairs = 0;   // Variable to count the matched pairs
+        
+        function startgame() {  // Function to start the game
+            document.getElementById('startbutton').style.display = 'none'; // Setzt das Display des startbuttons auf none
+            document.getElementById('game-board').style.display = 'flex'; // Setzt das Display des game-boards auf flex
+            shuffle(cardSymbols);   // Ruft die Funktion shuffle auf
+            generateCards();    // Ruft die Funktion generateCards auf
+        }
+
+        function restartgame(){
+            document.getElementById('game-board').innerHTML = ''; // Setzt den Inhalt des game-boards auf ''
+            matchedPairs = 0;   // Setzt die Variable matchedPairs auf 0
+            shuffle(cardSymbols);   // Ruft die Funktion shuffle auf
+            generateCards();    // Ruft die Funktion generateCards auf
+            document.getElementById('completion-message').style.display = 'none'; // Setzt das Display der completion-message auf none
+        }
+
+        function generateCards() {  // Function to generate the cards
+            let gameBoard = document.getElementById('game-board'); // Holt sich das Element mit der ID game-board
+            cardSymbols.forEach(symbol => { // Durchläuft das Array cardSymbols
+                let card = document.createElement('div'); // Erstellt ein div Element
+                card.className = 'card'; // Setzt die Klasse des div Elements auf card
+                card.textContent = '?';  // Setzt den Text des div Elements auf ?
+                card.onclick = () => flipCard(card); // Fügt dem div Element ein onclick Event hinzu, welches die Funktion flipCard aufruft
+                gameBoard.appendChild(card); // Fügt das div Element dem game-board hinzu
+            });
+        }
+        function shuffle(array) {   // Function to shuffle the array
+            for (let i = array.length - 1; i > 0; i--) { // Durchläuft das Array rückwärts
+                const j = Math.floor(Math.random() * (i + 1)); // Erzeugt eine Zufallszahl zwischen 0 und i
+                [array[i], array[j]] = [array[j], array[i]]; // Vertauscht die Elemente an den Stellen i und j
+            }
+        }
+
+        function flipCard(card) {   // Function to flip the card
+            if (flippedCards.length < 2 && !card.classList.contains('flipped')) { // Überprüft ob schon 2 Karten geflippt sind und ob die Karte selbst schon geflippt ist
+                card.textContent = cardSymbols[Array.from(card.parentNode.children).indexOf(card)]; // Setzt das Symbol der Karten, indem alle Karten in einem Array gespeichert werden und dann mit dem Index der Karte das Symbol aus dem Array zugeordnet wird
+
+                card.classList.add('flipped'); // Fügt der Karte die Klasse flipped hinzu(wichtig für zeile 35)
+                flippedCards.push(card);    // Fügt die Karte zum Array flippedCards hinzu
+
+                if (flippedCards.length === 2) { // Wenn 2 Karten geflippt sind, wird die Funktion checkMatch mit einm Delay aufgerufen
+                    setTimeout(checkMatch, 500);
+                }
+            }
+        }
+
+        function checkMatch() { 
+            if (flippedCards[0].textContent === flippedCards[1].textContent) { // Checks if the flipped cards.textContent matches
+                flippedCards[0].classList.add('matched');   // Adds the class matched to the flipped cards
+                flippedCards[1].classList.add('matched');
+                matchedPairs++; // erhöht den Countl für matchedPairs um 1
+                if (matchedPairs === cardSymbols.length / 2) { // Wenn alle Paare gefunden wurden, wird die completion message angezeigt
+                    document.getElementById('completion-message').style.display = 'block';
+                }
+            } else { // Wenn die Karten nicht übereinstimmen, wird das Symbol wieder auf ? gesetzt und die Klasse flipped entfernt
+                flippedCards[0].textContent = '?';
+                flippedCards[1].textContent = '?';
+                flippedCards[0].classList.remove('flipped');
+                flippedCards[1].classList.remove('flipped');
+            }
+            flippedCards = []; // Leert die Karten aus dem Array flippedCards
+        }
+    </script>
 </body>
 </html>

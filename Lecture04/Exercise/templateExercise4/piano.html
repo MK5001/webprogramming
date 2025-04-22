@@ -13,36 +13,220 @@
         <h1>Virtual Piano</h1>
         <p>Press the following keys to play the notes:</p>
         <ul class="list-inline">
-            <li class="list-inline-item key-spacing">
-                <i class="bi bi-keyboard"></i> <strong>A</strong> - C
-            </li>
-            <li class="list-inline-item key-spacing">
-                <i class="bi bi-keyboard"></i> <strong>S</strong> - D
-            </li>
-            <li class="list-inline-item key-spacing">
-                <i class="bi bi-keyboard"></i> <strong>D</strong> - E
-            </li>
-            <li class="list-inline-item key-spacing">
-                <i class="bi bi-keyboard"></i> <strong>F</strong> - F
-            </li>
-            <li class="list-inline-item key-spacing">
-                <i class="bi bi-keyboard"></i> <strong>G</strong> - G
-            </li>
-            <li class="list-inline-item key-spacing">
-                <i class="bi bi-keyboard"></i> <strong>H</strong> - A
-            </li>
-            <li class="list-inline-item key-spacing">
-                <i class="bi bi-keyboard"></i> <strong>J</strong> - B
-            </li>
+            <li class="list-inline-item"><strong>A</strong> - C</li>
+            <li class="list-inline-item"><strong>S</strong> - D</li>
+            <li class="list-inline-item"><strong>D</strong> - E</li>
+            <li class="list-inline-item"><strong>F</strong> - F</li>
+            <li class="list-inline-item"><strong>G</strong> - G</li>
+            <li class="list-inline-item"><strong>H</strong> - A</li>
+            <li class="list-inline-item"><strong>J</strong> - B</li>
         </ul>
-        <div id="piano" class="d-flex justify-content-center">
-            <!-- Piano keys with IDs for JavaScript interaction -->
+        <ul class="list-inline">
+            <li class="list-inline-item"><strong>W</strong> - C#</li>
+            <li class="list-inline-item"><strong>E</strong> - D#</li>
+            <li class="list-inline-item"><strong>T</strong> - F#</li>
+            <li class="list-inline-item"><strong>Z</strong> - G#</li>
+            <li class="list-inline-item"><strong>U</strong> - A#</li>
+        </ul>
+
+        <!-- Play Song Buttons -->
+        <div id="song" class="mt-5">
+            <button class="btn btn-primary" id="playSong1">Play Song 1</button>
+            <button class="btn btn-primary" id="playSong2">Play Song 2</button>
+            <button class="btn btn-primary" id="playSong3">Play Song 3</button>
+            <button class="btn btn-danger" id="stop" style="display: none;">Stop Song</button>
+            <button class="btn btn-danger" id="reset" style="display: none;">Reset</button>
+            <div id="notesContainer" class="d-flex justify-content-center mt-3">
+                <!-- Noten werden hier angezeigt -->
+            </div>
         </div>
-        <div id="note-line" class="mt-4">
-            <!-- Place Note Line here -->
+
+        <!-- Piano -->
+        <div id="piano" class="d-flex justify-content-center position-relative">
+            <!-- keys -->
+            <button class="key" id="keyA">C</button>
+            <button class="key black" id="keyW">C#</button>
+            <button class="key" id="keyS">D</button>
+            <button class="key black" id="keyE">D#</button>
+            <button class="key" id="keyD">E</button>
+            <button class="key" id="keyF">F</button>
+            <button class="key black" id="keyT">F#</button>
+            <button class="key" id="keyG">G</button>
+            <button class="key black" id="keyZ">G#</button>
+            <button class="key" id="keyH">A</button>
+            <button class="key black" id="keyU">A#</button>
+            <button class="key" id="keyJ">B</button>
         </div>
-        <!-- Place Buttons here -->
     </div>
-    <script src="script.js"></script>
+    <script>
+        // Global variables
+        let currentInterval = null; // Variable, um das aktuelle Intervall zu speichern
+        let SongIsPlaying = false; // Variable, um zu überprüfen, ob ein Song abgespielt wird
+        
+        // Aufruf für das Laden der JSON-Datei
+        LoadJson();
+
+        // Array of keys mit den jeweiligen Noten 
+        const keys = [
+            { id: 'keyA', note: 'C' },
+            { id: 'keyS', note: 'D' },
+            { id: 'keyD', note: 'E' },
+            { id: 'keyF', note: 'F' },
+            { id: 'keyG', note: 'G' },
+            { id: 'keyH', note: 'A' },
+            { id: 'keyJ', note: 'B' },
+            { id: 'keyW', note: 'C#' },
+            { id: 'keyE', note: 'D#' },
+            { id: 'keyT', note: 'F#' },
+            { id: 'keyZ', note: 'G#' },
+            { id: 'keyU', note: 'A#' }
+        ];
+        // Play sound function
+        function playSound(note) {
+            const encodedNote = note.replace('#', '%23'); // Encode # to %23, weil # ist ein special character in URL(daher findet er den Pfad nicht)
+            const audioPath = `sounds/${encodedNote}.mp3`;
+            console.log("Playing:", note, "from", audioPath);
+            let audio = new Audio(audioPath);
+            audio.play().catch(error => {
+                console.error("Error playing sound:", error);
+            });
+        }
+        // Event listeners, welcher beim keydown aufgerufen wird und die Note spielt
+        document.addEventListener('keydown', (event) => {
+            const key = keys.find(k => k.id === `key${event.key.toUpperCase()}`);
+            if (key) {
+                console.log(`Key pressed: ${event.key.toUpperCase()}, Note: ${key.note}`);
+                playSound(key.note);
+            } else { // Wenn der Key nicht in der keys-Liste ist
+                console.log(`Key pressed: ${event.key.toUpperCase()} not mapped to any note.`);
+            }
+        });
+
+        // Event listeners, welcher beim click aufgerufen wird und die Note spielt
+        document.querySelectorAll('.key').forEach(key => {
+            key.addEventListener('click', () => {
+                const note = keys.find(k => k.id === key.id).note;
+                console.log(`Key clicked: ${key.id}, Note: ${note}`);
+                playSound(note);
+            });
+        });
+
+        // fetched die songs aus der songs.json und spielt sie bei auslösen des Eventlisteners aus
+        async function LoadJson() {
+            const response = await fetch('songs.json');
+            try {
+                const songs = await response.json();
+                document.getElementById('playSong1').addEventListener('click', () => {
+                    playSong(songs.song1);
+                });
+                document.getElementById('playSong2').addEventListener('click', () => {
+                    playSong(songs.song2);
+                });
+                document.getElementById('playSong3').addEventListener('click', () => {
+                    playSong(songs.song3);
+                });
+                document.getElementById('stop').addEventListener('click', () => {
+                    stopSong();
+                });
+            } catch (error) {
+                console.error("Error loading songs:", error);
+            }        
+        }
+        
+        // Funktion, um die Noten in Boxen anzuzeigen
+        function displayNotes(song) {
+            const notesContainer = document.getElementById('notesContainer');
+            notesContainer.innerHTML = ''; 
+            song.forEach(note => {
+                const noteBox = document.createElement('div');
+                noteBox.className = 'note-box';
+                noteBox.textContent = note;
+                notesContainer.appendChild(noteBox);
+            });
+            toggleResetButton(true); // Zeige den Reset-Button, wenn Noten-Boxen existieren
+        }
+
+        // Reset-Function, welche die Noten-Boxen entfernt
+        function resetGame() {
+            // Noten-Boxen entfernen
+            const notesContainer = document.getElementById('notesContainer');
+            notesContainer.innerHTML = '';
+            SongIsPlaying = false;
+            toggleResetButton(false); // Reset-Button ausblenden
+            console.log("Game has been reset.");
+        }
+
+        // Funktion, um den Stop-Button zu steuern
+        function toggleStopButton(show) {
+            const stopButton = document.getElementById('stop');
+            if (show) {
+                stopButton.style.display = 'inline-block';
+                toggleResetButton(false); // Verstecke den Reset-Button, wenn der Stop-Button sichtbar ist
+            } else {
+                stopButton.style.display = 'none';
+                // Zeige den Reset-Button nur, wenn Noten-Boxen existieren
+                const notesContainer = document.getElementById('notesContainer');
+                if (notesContainer.children.length > 0) {
+                    toggleResetButton(true);
+                }
+            }
+        }
+
+        // Funktion, um den Reset-Button zu steuern
+        function toggleResetButton(show) {
+            const resetButton = document.getElementById('reset');
+            if (show) {
+                resetButton.style.display = 'inline-block';
+            } else {
+                resetButton.style.display = 'none';
+            }
+        }
+
+        
+        function stopSong() {
+            if (currentInterval) {
+                clearInterval(currentInterval); // Stoppe das Intervall
+                currentInterval = null; // Setze die Variable zurück
+            }
+            toggleStopButton(false); // Verstecke den Stop-Button
+            console.log("Song stopped.");
+        }
+
+        // Funktion, welche die Songs abspielt
+        function playSong(song) {
+            let i = 0;
+            displayNotes(song); // Noten anzeigen
+            if (SongIsPlaying == true) {
+                stopSong();
+            }
+            SongIsPlaying = true;
+            // Stop-Button anzeigen und Reset-Button ausblenden
+            toggleStopButton(true);
+
+            currentInterval = setInterval(() => {
+                if (i >= song.length) {
+                    clearInterval(currentInterval);
+                    currentInterval = null; // Setze die Variable zurück
+                    toggleStopButton(false); // Stop-Button ausblenden
+                    toggleResetButton(true); // Reset-Button anzeigen
+                    return;
+                }
+                playSound(song[i]);
+                i++;
+            }, 500);
+        
+        }
+
+        // Stop-Button-Event
+        document.getElementById('stop').addEventListener('click', () => {
+            stopSong();
+        });
+
+        // Reset-Button-Event
+        document.getElementById('reset').addEventListener('click', () => {
+            stopSong();
+            resetGame();
+        });
+    </script>
 </body>
 </html>
