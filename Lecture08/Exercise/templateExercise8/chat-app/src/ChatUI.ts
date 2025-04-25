@@ -1,8 +1,8 @@
 ﻿// src/ChatUI.ts
 
-import { ApiService } from "./ApiService";
-import { StateManager } from "./StateManager";
-import type { User, ApiResponse } from "./ApiService";
+import { ApiService } from "./ApiService.js";
+import { StateManager } from "./StateManager.js";
+import type { User, ApiResponse } from "./ApiService.js";
 
 export class ChatUI {
 
