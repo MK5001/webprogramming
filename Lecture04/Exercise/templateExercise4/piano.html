@@ -59,9 +59,9 @@
         </div>
     </div>
     <script>
-        // Global variables
-        let currentInterval = null; // Variable, um das aktuelle Intervall zu speichern
-        let SongIsPlaying = false; // Variable, um zu überprüfen, ob ein Song abgespielt wird
+        
+        let currentInterval = null; 
+        let SongIsPlaying = false;
         
         // Aufruf für das Laden der JSON-Datei
         LoadJson();
@@ -111,7 +111,7 @@
             });
         });
 
-        // fetched die songs aus der songs.json und spielt sie bei auslösen des Eventlisteners aus
+        // fetched die songs aus der songs.json und spielt sie bei auslösen des Eventlisteners ab
         async function LoadJson() {
             const response = await fetch('songs.json');
             try {
