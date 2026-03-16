@@ -187,6 +187,7 @@
             if (currentInterval) {
                 clearInterval(currentInterval); // Stoppe das Intervall
                 currentInterval = null; // Setze die Variable zurück
+                SongIsPlaying = false;
             }
             toggleStopButton(false); // Verstecke den Stop-Button
             console.log("Song stopped.");
@@ -209,6 +210,7 @@
                     currentInterval = null; // Setze die Variable zurück
                     toggleStopButton(false); // Stop-Button ausblenden
                     toggleResetButton(true); // Reset-Button anzeigen
+                    SongIsPlaying = false;
                     return;
                 }
                 playSound(song[i]);
