@@ -187,8 +187,8 @@
             if (currentInterval) {
                 clearInterval(currentInterval); // Stoppe das Intervall
                 currentInterval = null; // Setze die Variable zurück
-                SongIsPlaying = false;
             }
+            SongIsPlaying = false;
             toggleStopButton(false); // Verstecke den Stop-Button
             console.log("Song stopped.");
         }
@@ -210,7 +210,7 @@
                     currentInterval = null; // Setze die Variable zurück
                     toggleStopButton(false); // Stop-Button ausblenden
                     toggleResetButton(true); // Reset-Button anzeigen
-                    SongIsPlaying = false;
+                    stopSong();
                     return;
                 }
                 playSound(song[i]);
@@ -219,14 +219,8 @@
         
         }
 
-        // Stop-Button-Event
-        document.getElementById('stop').addEventListener('click', () => {
-            stopSong();
-        });
-
         // Reset-Button-Event
         document.getElementById('reset').addEventListener('click', () => {
-            stopSong();
             resetGame();
         });
     </script>
