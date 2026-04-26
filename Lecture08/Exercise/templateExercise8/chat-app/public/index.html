@@ -3,87 +3,145 @@
 <head>
   <meta charset="UTF-8">
   <title>Week 8: TypeScript Messenger</title>
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
   <link rel="stylesheet" href="./styles.css" />
 </head>
-<body>
-  <h1>TypeScript Messenger (Week 8)</h1>
-  
-  <!-- 1) Register Form -->
-  <section>
-    <h2>Register (Task 1)</h2>
-    <form id="registerForm">
-      <label for="regName">Name: </label>
-      <input type="text" id="regName" required><br>
 
-      <label for="regEmail">Email: </label>
-      <input type="email" id="regEmail" required autocomplete="email"><br>
+<body class="bg-light">
 
-      <label for="regPass">Password: </label>
-      <input type="password" id="regPass" required autocomplete="new-password"><br>
+  <div class="container py-5">
 
-      <label for="regGroup">Group ID: </label>
-      <input type="number" id="regGroup" required><br>
+    <div class="text-center mb-5">
+      <h1 class="display-5 fw-bold text-primary">TypeScript Messenger (Week 8)</h1>
+      <p class="text-muted">Simple messenger interface for registration, login, users and messages</p>
+    </div>
 
-      <button type="submit">Register</button>
-    </form>
-    <div id="registerResult"></div>
-  </section>
+    <div class="row g-4">
 
-  <hr/>
+      <!-- Register Form -->
+      <div class="col-12 col-lg-6">
+        <section class="card shadow-sm border-0 h-100">
+          <div class="card-body">
+            <h2 class="card-title h4 mb-4">Register (Task 1)</h2>
 
-  <!-- 2) Login Form -->
-  <section>
-    <h2>Login (Task 2)</h2>
-    <form id="loginForm">
-      <label for="loginUser">Username/Email: </label>
-      <input type="text" id="loginUser" required autocomplete="username"><br>
+            <form id="registerForm">
+              <div class="mb-3">
+                <label for="regName" class="form-label">Name: </label>
+                <input type="text" id="regName" class="form-control" required>
+              </div>
 
-      <label for="loginPass">Password: </label>
-      <input type="password" id="loginPass" required autocomplete="current-password"><br>
+              <div class="mb-3">
+                <label for="regEmail" class="form-label">Email: </label>
+                <input type="email" id="regEmail" class="form-control" required autocomplete="email">
+              </div>
 
-      <button type="submit">Login</button>
-    </form>
-    <div id="loginResult"></div>
-  </section>
+              <div class="mb-3">
+                <label for="regPass" class="form-label">Password: </label>
+                <input type="password" id="regPass" class="form-control" required autocomplete="new-password">
+              </div>
 
-  <hr/>
+              <div class="mb-3">
+                <label for="regGroup" class="form-label">Group ID: </label>
+                <input type="number" id="regGroup" class="form-control" required>
+              </div>
 
-  <!-- 3) Load Users -->
-  <section>
-    <h2>Get Users (Task 3)</h2>
-    <button id="loadUsersBtn">Load Users</button>
-    <ul id="usersList"></ul>
-  </section>
+              <button type="submit" class="btn btn-primary w-100">Register</button>
+            </form>
 
-  <hr/>
+            <div id="registerResult" class="mt-3"></div>
+          </div>
+        </section>
+      </div>
 
-  <!-- 4) Send Message -->
-  <section>
-    <h2>Send Message (Task 4)</h2>
-    <form id="sendForm">
-      <label for="senderId">Sender ID: </label>
-      <input type="text" id="senderId" required><br>
+      <!-- Login Form -->
+      <div class="col-12 col-lg-6">
+        <section class="card shadow-sm border-0 h-100">
+          <div class="card-body">
+            <h2 class="card-title h4 mb-4">Login (Task 2)</h2>
 
-      <label for="receiverId">Receiver ID: </label>
-      <input type="text" id="receiverId" required><br>
+            <form id="loginForm">
+              <div class="mb-3">
+                <label for="loginUser" class="form-label">Username/Email: </label>
+                <input type="text" id="loginUser" class="form-control" required autocomplete="username">
+              </div>
 
-      <label for="messageText">Message: </label>
-      <input type="text" id="messageText" required><br>
+              <div class="mb-3">
+                <label for="loginPass" class="form-label">Password: </label>
+                <input type="password" id="loginPass" class="form-control" required autocomplete="current-password">
+              </div>
 
-      <button type="submit">Send</button>
-    </form>
-    <div id="sendResult"></div>
-  </section>
+              <button type="submit" class="btn btn-success w-100">Login</button>
+            </form>
 
-  <!-- Script references – could be a bundled file or separate transpiled modules -->
+            <div id="loginResult" class="mt-3"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Load Users -->
+      <div class="col-12">
+        <section class="card shadow-sm border-0">
+          <div class="card-body">
+            <h2 class="card-title h4 mb-4">Get Users (Task 3)</h2>
+
+            <button id="loadUsersBtn" class="btn btn-outline-primary">
+              Load Users
+            </button>
+
+            <ul id="usersList" class="list-group mt-2"></ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- Send Message -->
+      <div class="col-12">
+        <section class="card shadow-sm border-0">
+          <div class="card-body">
+            <h2 class="card-title h4 mb-4">Send Message (Task 4)</h2>
+
+            <form id="sendForm">
+              <div class="row g-3">
+                <div class="col-12 col-md-6">
+                  <label for="senderId" class="form-label">Sender ID: </label>
+                  <input type="text" id="senderId" class="form-control" required>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <label for="receiverId" class="form-label">Receiver ID: </label>
+                  <input type="text" id="receiverId" class="form-control" required>
+                </div>
+
+                <div class="col-12">
+                  <label for="messageText" class="form-label">Message: </label>
+                  <input type="text" id="messageText" class="form-control" required>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary mt-4">
+                Send
+              </button>
+            </form>
+
+            <div id="sendResult" class="mt-3"></div>
+          </div>
+        </section>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+  </script>
+
   <script type="module" src="dist/main.js"></script>
-  <!-- 
-    If not bundling, you might have something like:
-    <script type="module" src="../dist/ChatUI.js"></script>
-    <script type="module">
-      import { ChatUI } from '../dist/ChatUI.js';
-      new ChatUI();
-    </script>
-  -->
+
 </body>
 </html>
