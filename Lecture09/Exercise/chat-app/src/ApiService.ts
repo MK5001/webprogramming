@@ -13,6 +13,13 @@ export interface ApiResponse {
     name: string;
     group_id: string;
   }
+
+  export interface ChatMessage {
+    sender_id: string;
+    receiver_id: string;
+    message: string;
+    timestamp?: number;
+  }
   
   const BASE_URL = "http://webp-ilv-backend.cs.technikum-wien.at/messenger";
   
@@ -64,40 +71,33 @@ export interface ApiResponse {
     }
   
     // 2) Login
-    static async loginUser(
-      usernameOrEmail: string,
-      password: string
-    ): Promise<ApiResponse> {
-      const url = `${BASE_URL}/login.php`;
-      // formData wird hier nicht verwendet
-      const formData = new FormData();
-      formData.append("username_or_email", usernameOrEmail);
-      formData.append("password", password);
-  
-      const resp = await fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username_or_email: usernameOrEmail,
-            password: password,
-          }),
-});
-      const data: ApiResponse = await resp.json();
-      console.log("Login/Registration response:", data);
-  
-      // If the backend returns { "token": "...", ... }
-      if (data.token) {
-        this.token = data.token;
-        console.log("Token stored:", this.token);
-      }
-      if (data.id) {
-        this.registeredUserId = data.id;
-        console.log("Userid stored:", this.registeredUserId);
-      }
-      return data;
-    }
+static async loginUser(usernameOrEmail: string, password: string): Promise<ApiResponse> {
+  const url = `${BASE_URL}/login.php`;
+
+  const formData = new FormData();
+  formData.append("username_or_email", usernameOrEmail);
+  formData.append("password", password);
+
+  const resp = await fetch(url, {
+    method: "POST",
+    body: formData,
+  });
+
+  const data: ApiResponse = await resp.json();
+  console.log("Login/Registration response:", data);
+
+  if (data.token) {
+    this.token = data.token;
+    console.log("Token stored:", this.token);
+  }
+
+  if (data.id) {
+    this.registeredUserId = data.id;
+    console.log("Userid stored:", this.registeredUserId);
+  }
+
+  return data;
+}
   
     // 3) Get Users
   
@@ -121,37 +121,47 @@ export interface ApiResponse {
     const resp = await fetch(url);
     return resp.json();
   }
-  
-  
-    // 4) Send Message
-    static async sendMessage(
-      senderId: string,
-      receiverId: string,
-      message: string
-    ): Promise<ApiResponse> {
-      const url = `${BASE_URL}/send_message.php`;
-      const formData = new FormData();
-      formData.append("sender_id", senderId);
-      formData.append("receiver_id", receiverId);
-      formData.append("message", message);
-  
+
+    static async getConversation(
+      user1Id: string,
+      user2Id: string
+    ): Promise<ChatMessage[] | { error?: string }> {
+      const params: string[] = [];
+
       if (this.token) {
-        formData.append("token", this.token);
+        params.push(`token=${encodeURIComponent(this.token)}`);
       }
-  
-      const resp = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token: this.token,
-          sender_id: senderId,
-          receiver_id: receiverId,
-          message: message,
-        }),
-      });
+
+      params.push(`user1_id=${encodeURIComponent(user1Id)}`);
+      params.push(`user2_id=${encodeURIComponent(user2Id)}`);
+
+      const url = `${BASE_URL}/get_conversation.php?${params.join("&")}`;
+
+      const resp = await fetch(url);
       return resp.json();
     }
-  }
+  
+  
+// 4) Send Message
+static async sendMessage(
+  senderId: string,
+  receiverId: string,
+  message: string
+): Promise<ApiResponse> {
+  const url = `${BASE_URL}/send_message.php`;
+
+  const formData = new FormData();
+  formData.append("token", String(this.token));
+  formData.append("sender_id", String(senderId));
+  formData.append("receiver_id", String(receiverId));
+  formData.append("message", message);
+
+  const resp = await fetch(url, {
+    method: "POST",
+    body: formData,
+  });
+
+  return resp.json();
+}
+}
   

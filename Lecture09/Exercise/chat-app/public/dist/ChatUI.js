@@ -1,176 +1,135 @@
 // src/ChatUI.ts
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-import { ApiService } from "./ApiService.js";
-import { StateManager } from "./StateManager.js";
 export class ChatUI {
-    constructor() {
-        this.initEventListeners();
-    }
-    initEventListeners() {
-        // 1) Registration
+    onRegister(handler) {
         const regForm = document.getElementById("registerForm");
         if (regForm) {
-            regForm.addEventListener("submit", (event) => this.handleRegister(event));
+            regForm.addEventListener("submit", handler);
         }
-        // 2) Login
+    }
+    onLogin(handler) {
         const loginForm = document.getElementById("loginForm");
         if (loginForm) {
-            loginForm.addEventListener("submit", (event) => this.handleLogin(event));
+            loginForm.addEventListener("submit", handler);
         }
-        // 3) Get Users
+    }
+    onLoadUsers(handler) {
         const loadUsersBtn = document.getElementById("loadUsersBtn");
         if (loadUsersBtn) {
-            loadUsersBtn.addEventListener("click", () => this.handleGetUsers());
+            loadUsersBtn.addEventListener("click", handler);
         }
-        // 4) Send Message
+    }
+    onSendMessage(handler) {
         const sendForm = document.getElementById("sendForm");
         if (sendForm) {
-            sendForm.addEventListener("submit", (event) => this.handleSendMessage(event));
+            sendForm.addEventListener("submit", handler);
         }
     }
-    // --------------------------------------------------------------------------
-    // Task 1: Handle Register
-    // --------------------------------------------------------------------------
-    handleRegister(event) {
-        return __awaiter(this, void 0, void 0, function* () {
-            event.preventDefault();
-            const regResultDiv = document.getElementById("registerResult");
-            const name = document.getElementById("regName").value.trim();
-            const email = document.getElementById("regEmail").value.trim();
-            const pass = document.getElementById("regPass").value.trim();
-            const group = document.getElementById("regGroup").value.trim();
-            try {
-                if (regResultDiv)
-                    regResultDiv.textContent = "Registering ...";
-                const response = yield ApiService.registerUser(name, email, pass, group);
-                if (response.success) {
-                    if (regResultDiv) {
-                        regResultDiv.textContent = `Registration successful! New user ID: ${response.id}`;
-                    }
-                    // Optionally reset form
-                    event.target.reset();
-                }
-                else {
-                    if (regResultDiv) {
-                        regResultDiv.textContent = `Registration failed: ${response.error || "Unknown error"}`;
-                    }
-                }
-            }
-            catch (err) {
-                console.error("handleRegister Error:", err);
-                if (regResultDiv)
-                    regResultDiv.textContent = "Network or server error.";
-            }
+    getRegisterFormData() {
+        return {
+            name: document.getElementById("regName").value.trim(),
+            email: document.getElementById("regEmail").value.trim(),
+            password: document.getElementById("regPass").value.trim(),
+            group: document.getElementById("regGroup").value.trim(),
+        };
+    }
+    getLoginFormData() {
+        return {
+            usernameOrEmail: document.getElementById("loginUser").value.trim(),
+            password: document.getElementById("loginPass").value.trim(),
+        };
+    }
+    getChatMessageText() {
+        return document.getElementById("messageText").value.trim();
+    }
+    clearChatInput() {
+        const messageInput = document.getElementById("messageText");
+        if (messageInput) {
+            messageInput.value = "";
+        }
+    }
+    showRegisterMessage(message) {
+        const regResultDiv = document.getElementById("registerResult");
+        if (regResultDiv) {
+            regResultDiv.textContent = message;
+        }
+    }
+    showLoginMessage(message) {
+        const loginResultDiv = document.getElementById("loginResult");
+        if (loginResultDiv) {
+            loginResultDiv.textContent = message;
+        }
+    }
+    showSendMessage(message) {
+        const sendResultDiv = document.getElementById("sendResult");
+        if (sendResultDiv) {
+            sendResultDiv.textContent = message;
+        }
+    }
+    showUsersLoading() {
+        const usersList = document.getElementById("usersList");
+        if (usersList) {
+            usersList.innerHTML = `<li class="list-group-item text-muted">Loading users...</li>`;
+        }
+    }
+    showUsers(users, onUserClick) {
+        const usersList = document.getElementById("usersList");
+        if (!usersList)
+            return;
+        usersList.innerHTML = "";
+        users.forEach((user) => {
+            const li = document.createElement("li");
+            li.className = "list-group-item list-group-item-action";
+            li.style.cursor = "pointer";
+            li.textContent = `${user.name} - Gruppe ${user.group_id}`;
+            li.addEventListener("click", () => onUserClick(user));
+            usersList.appendChild(li);
         });
     }
-    // --------------------------------------------------------------------------
-    // Task 2: Handle Login
-    // --------------------------------------------------------------------------
-    handleLogin(event) {
-        return __awaiter(this, void 0, void 0, function* () {
-            event.preventDefault();
-            const loginResultDiv = document.getElementById("loginResult");
-            const usernameOrEmail = document.getElementById("loginUser").value.trim();
-            const password = document.getElementById("loginPass").value.trim();
-            try {
-                if (loginResultDiv)
-                    loginResultDiv.textContent = "Logging in ...";
-                const response = yield ApiService.loginUser(usernameOrEmail, password);
-                if (response.token) {
-                    // Save the token in StateManager
-                    StateManager.setToken(response.token);
-                    if (loginResultDiv) {
-                        loginResultDiv.textContent = `Login successful! Token: ${response.token}`;
-                    }
-                    event.target.reset();
-                }
-                else {
-                    if (loginResultDiv) {
-                        loginResultDiv.textContent = `Login failed: ${response.error || "Unknown error"}`;
-                    }
-                }
-            }
-            catch (err) {
-                console.error("handleLogin Error:", err);
-                if (loginResultDiv)
-                    loginResultDiv.textContent = "Network or server error.";
-            }
-        });
+    showUsersError(message) {
+        const usersList = document.getElementById("usersList");
+        if (usersList) {
+            usersList.innerHTML = `<li class="list-group-item text-danger">${message}</li>`;
+        }
     }
-    // --------------------------------------------------------------------------
-    // Task 3: Get Users
-    // --------------------------------------------------------------------------
-    handleGetUsers() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const usersList = document.getElementById("usersList");
-            if (usersList)
-                usersList.innerHTML = "Loading users...";
-            try {
-                const data = yield ApiService.getUsers();
-                // data can be either an array of User or an {error: string}
-                if (Array.isArray(data)) {
-                    // success
-                    if (usersList) {
-                        usersList.innerHTML = "";
-                        data.forEach((user) => {
-                            const li = document.createElement("li");
-                            li.textContent = `User: ${user.name} (ID: ${user.id}), group: ${user.group_id}`;
-                            usersList.appendChild(li);
-                        });
-                    }
-                }
-                else {
-                    // data is an object with `error` property
-                    if (usersList) {
-                        usersList.innerHTML = `Error: ${data.error}`;
-                    }
-                }
-            }
-            catch (err) {
-                console.error("handleGetUsers Error:", err);
-                if (usersList)
-                    usersList.innerHTML = "Network or server error while loading users.";
-            }
-        });
+    showChatTitle(user) {
+        const chatTitle = document.getElementById("chatTitle");
+        if (chatTitle) {
+            chatTitle.textContent = `Chat mit ${user.name}`;
+        }
     }
-    // --------------------------------------------------------------------------
-    // Task 4: Send Message
-    // --------------------------------------------------------------------------
-    handleSendMessage(event) {
-        return __awaiter(this, void 0, void 0, function* () {
-            event.preventDefault();
-            const sendResultDiv = document.getElementById("sendResult");
-            const senderId = document.getElementById("senderId").value.trim();
-            const receiverId = document.getElementById("receiverId").value.trim();
-            const message = document.getElementById("messageText").value.trim();
-            try {
-                if (sendResultDiv)
-                    sendResultDiv.textContent = "Sending message ...";
-                const response = yield ApiService.sendMessage(senderId, receiverId, message);
-                if (response.success) {
-                    if (sendResultDiv)
-                        sendResultDiv.textContent = "Message successfully sent!";
-                    event.target.reset();
-                }
-                else {
-                    if (sendResultDiv) {
-                        sendResultDiv.textContent = `Error: ${response.error || "Unknown error"}`;
-                    }
-                }
+    showChatLoading() {
+        const chatMessages = document.getElementById("chatMessages");
+        if (chatMessages) {
+            chatMessages.innerHTML = `<div class="text-muted">Chat wird geladen...</div>`;
+        }
+    }
+    showConversation(messages, currentUserId) {
+        const chatMessages = document.getElementById("chatMessages");
+        if (!chatMessages)
+            return;
+        chatMessages.innerHTML = "";
+        messages.forEach((msg) => {
+            const isOwnMessage = msg.sender_id === currentUserId;
+            const wrapper = document.createElement("div");
+            wrapper.className = `d-flex mb-2 ${isOwnMessage ? "justify-content-end" : "justify-content-start"}`;
+            const bubble = document.createElement("div");
+            bubble.className = `p-2 rounded shadow-sm ${isOwnMessage ? "bg-primary text-white" : "bg-white border"}`;
+            bubble.style.maxWidth = "70%";
+            const text = document.createElement("div");
+            text.textContent = msg.message;
+            bubble.appendChild(text);
+            if (msg.timestamp) {
+                const time = document.createElement("small");
+                time.className = isOwnMessage ? "d-block text-white-50 mt-1" : "d-block text-muted mt-1";
+                time.textContent = new Date(msg.timestamp * 1000).toLocaleString();
+                bubble.appendChild(time);
             }
-            catch (err) {
-                console.error("handleSendMessage Error:", err);
-                if (sendResultDiv)
-                    sendResultDiv.textContent = "Network or server error while sending message.";
-            }
+            wrapper.appendChild(bubble);
+            chatMessages.appendChild(wrapper);
         });
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    resetForm(event) {
+        event.target.reset();
     }
 }

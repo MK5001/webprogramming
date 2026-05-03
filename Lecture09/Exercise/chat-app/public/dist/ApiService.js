@@ -10,27 +10,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 const BASE_URL = "http://webp-ilv-backend.cs.technikum-wien.at/messenger";
 export class ApiService {
-    // Provide a getter if you want to retrieve it elsewhere
     static getToken() {
         return this.token;
     }
     static getRegisteredUserId() {
         return this.registeredUserId;
     }
-    // ---------------------------------------------
     // 1) Register a new user
-    // ---------------------------------------------
     static registerUser(name, email, password, groupId) {
         return __awaiter(this, void 0, void 0, function* () {
             const url = `${BASE_URL}/registrieren.php`;
-            const formData = new FormData();
-            formData.append("name", name);
-            formData.append("email", email);
-            formData.append("password", password);
-            formData.append("group_id", groupId);
+            const body = new URLSearchParams();
+            body.append("name", name);
+            body.append("email", email);
+            body.append("password", password);
+            body.append("group_id", groupId);
             const resp = yield fetch(url, {
                 method: "POST",
-                body: formData,
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body,
             });
             const data = yield resp.json();
             // If the response includes "id", store it
@@ -41,9 +41,7 @@ export class ApiService {
             return data;
         });
     }
-    // ---------------------------------------------
     // 2) Login
-    // ---------------------------------------------
     static loginUser(usernameOrEmail, password) {
         return __awaiter(this, void 0, void 0, function* () {
             const url = `${BASE_URL}/login.php`;
@@ -56,7 +54,6 @@ export class ApiService {
             });
             const data = yield resp.json();
             console.log("Login/Registration response:", data);
-            // If the backend returns { "token": "...", ... }
             if (data.token) {
                 this.token = data.token;
                 console.log("Token stored:", this.token);
@@ -68,19 +65,13 @@ export class ApiService {
             return data;
         });
     }
-    // ---------------------------------------------
     // 3) Get Users
-    // ---------------------------------------------
-    // Inside ApiService class
     static getUsers() {
         return __awaiter(this, void 0, void 0, function* () {
-            // Build the query params conditionally
             const params = [];
-            // If we have a token, add it
             if (this.token) {
                 params.push(`token=${this.token}`);
             }
-            // If we have the registered user ID, add it
             if (this.registeredUserId) {
                 params.push(`id=${this.registeredUserId}`);
             }
@@ -92,20 +83,28 @@ export class ApiService {
             return resp.json();
         });
     }
-    // ---------------------------------------------
+    static getConversation(user1Id, user2Id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const params = [];
+            if (this.token) {
+                params.push(`token=${encodeURIComponent(this.token)}`);
+            }
+            params.push(`user1_id=${encodeURIComponent(user1Id)}`);
+            params.push(`user2_id=${encodeURIComponent(user2Id)}`);
+            const url = `${BASE_URL}/get_conversation.php?${params.join("&")}`;
+            const resp = yield fetch(url);
+            return resp.json();
+        });
+    }
     // 4) Send Message
-    // ---------------------------------------------
     static sendMessage(senderId, receiverId, message) {
         return __awaiter(this, void 0, void 0, function* () {
             const url = `${BASE_URL}/send_message.php`;
             const formData = new FormData();
-            formData.append("sender_id", senderId);
-            formData.append("receiver_id", receiverId);
+            formData.append("token", String(this.token));
+            formData.append("sender_id", String(senderId));
+            formData.append("receiver_id", String(receiverId));
             formData.append("message", message);
-            // If your server needs the token here:
-            if (this.token) {
-                formData.append("token", this.token);
-            }
             const resp = yield fetch(url, {
                 method: "POST",
                 body: formData,
@@ -114,6 +113,5 @@ export class ApiService {
         });
     }
 }
-// We store the token here after login
 ApiService.token = null;
 ApiService.registeredUserId = null;

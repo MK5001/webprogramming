@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Week 8: TypeScript Messenger</title>
+  <title>Week 9: TypeScript Messenger</title>
 
   <!-- Bootstrap CSS -->
   <link
@@ -18,7 +18,7 @@
   <div class="container py-5">
 
     <div class="text-center mb-5">
-      <h1 class="display-5 fw-bold text-primary">TypeScript Messenger (Week 8)</h1>
+      <h1 class="display-5 fw-bold text-primary">TypeScript Messenger (Week 9)</h1>
     </div>
 
     <div class="row g-4">
@@ -87,51 +87,37 @@
       <div class="col-12">
         <section class="card shadow-sm border-0">
           <div class="card-body">
-            <h2 class="card-title h4 mb-4">Get Users (Task 3)</h2>
+            <h2 class="card-title h4 mb-4">Chat</h2>
 
-            <button id="loadUsersBtn" class="btn btn-outline-primary">
+            <button id="loadUsersBtn" class="btn btn-outline-primary mb-3">
               Load Users
             </button>
 
-            <ul id="usersList" class="list-group mt-2"></ul>
-          </div>
-        </section>
-      </div>
-
-      <!-- Send Message -->
-      <div class="col-12">
-        <section class="card shadow-sm border-0">
-          <div class="card-body">
-            <h2 class="card-title h4 mb-4">Send Message (Task 4)</h2>
-
-            <form id="sendForm">
-              <div class="row g-3">
-                <div class="col-12 col-md-6">
-                  <label for="senderId" class="form-label">Sender ID: </label>
-                  <input type="text" id="senderId" class="form-control" required>
-                </div>
-
-                <div class="col-12 col-md-6">
-                  <label for="receiverId" class="form-label">Receiver ID: </label>
-                  <input type="text" id="receiverId" class="form-control" required>
-                </div>
-
-                <div class="col-12">
-                  <label for="messageText" class="form-label">Message: </label>
-                  <input type="text" id="messageText" class="form-control" required>
-                </div>
+            <div class="row g-3">
+              <div class="col-12 col-md-4">
+                <ul id="usersList" class="list-group"></ul>
               </div>
 
-              <button type="submit" class="btn btn-primary mt-4">
-                Send
-              </button>
-            </form>
+              <div class="col-12 col-md-8">
+                <h3 id="chatTitle" class="h5 text-muted mb-3">Kein User ausgewählt</h3>
 
-            <div id="sendResult" class="mt-3"></div>
+                <div id="chatMessages" class="border rounded bg-light p-3 mb-3 overflow-auto" style="height: 350px;">
+                  <div class="text-muted">Wähle einen User aus, um den Chat zu laden.</div>
+                </div>
+
+                <form id="sendForm" class="input-group">
+                  <input type="text" id="messageText" class="form-control" placeholder="Nachricht schreiben..." required>
+                  <button type="submit" class="btn btn-primary">
+                    Send
+                  </button>
+                </form>
+
+                <div id="sendResult" class="mt-3"></div>
+              </div>
+            </div>
           </div>
         </section>
       </div>
-
     </div>
   </div>
 
