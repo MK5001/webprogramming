@@ -4,6 +4,8 @@ import { StateManager } from "./StateManager.js";
 import type { User } from "./ApiService.js";
 
 const chatUI = new ChatUI();
+let selectedUser: User | null = null;
+let refreshIntervalId: number | null = null;
 
 chatUI.onRegister(handleRegister);
 chatUI.onLogin(handleLogin);
@@ -42,8 +44,9 @@ async function handleLogin(event: Event) {
 
     if (response.token) {
       StateManager.setToken(response.token);
-      chatUI.showLoginMessage(`Login successful! Token: ${response.token}`);
+      chatUI.showLoginMessage("Login successful!");
       chatUI.resetForm(event);
+      await handleGetUsers();
     } else {
       chatUI.showLoginMessage(`Login failed: ${response.error || "Unknown error"}`);
     }
@@ -61,7 +64,7 @@ async function handleGetUsers() {
     const data = await ApiService.getUsers();
 
     if (Array.isArray(data)) {
-      chatUI.showUsers(data as User[]);
+      chatUI.showUsers(data as User[], handleUserSelected);
     } else {
       chatUI.showUsersError(`Error: ${data.error}`);
     }
@@ -71,18 +74,80 @@ async function handleGetUsers() {
   }
 }
 
+async function handleUserSelected(user: User) {
+  selectedUser = user;
+  chatUI.showChatTitle(user);
+  await loadConversation(true);
+  startChatRefresh();
+}
+
+async function loadConversation(showLoading = false) {
+  const currentUserId = ApiService.getRegisteredUserId();
+
+  if (!currentUserId || !selectedUser) {
+    chatUI.showSendMessage("Bitte zuerst einloggen und einen User auswählen.");
+    return;
+  }
+
+  try {
+    if (showLoading) {
+      chatUI.showChatLoading();
+    }
+
+    const data = await ApiService.getConversation(currentUserId, selectedUser.id);
+
+    if (Array.isArray(data)) {
+      chatUI.showConversation(data, currentUserId);
+    } else {
+      chatUI.showSendMessage(`Fehler: ${data.error || "Conversation konnte nicht geladen werden."}`);
+    }
+  } catch (err) {
+    console.error("loadConversation Error:", err);
+    chatUI.showSendMessage("Network or server error while loading conversation.");
+  }
+}
+
+function startChatRefresh() {
+  stopChatRefresh();
+
+  refreshIntervalId = window.setInterval(() => {
+    if (selectedUser) {
+      loadConversation();
+    }
+  }, 10000);
+}
+
+function stopChatRefresh() {
+  if (refreshIntervalId !== null) {
+    clearInterval(refreshIntervalId);
+    refreshIntervalId = null;
+  }
+}
+
 // Task 4: Send Message
 async function handleSendMessage(event: Event) {
   event.preventDefault();
-  const { senderId, receiverId, message } = chatUI.getMessageFormData();
+  const currentUserId = ApiService.getRegisteredUserId();
+  const message = chatUI.getChatMessageText();
+
+  if (!currentUserId || !selectedUser) {
+    chatUI.showSendMessage("Bitte zuerst einloggen und einen User auswählen.");
+    return;
+  }
+
+  if (!message) {
+    chatUI.showSendMessage("Bitte eine Nachricht eingeben.");
+    return;
+  }
 
   try {
     chatUI.showSendMessage("Sending message ...");
-    const response = await ApiService.sendMessage(senderId, receiverId, message);
+    const response = await ApiService.sendMessage(currentUserId, selectedUser.id, message);
 
     if (response.success) {
       chatUI.showSendMessage("Message successfully sent!");
-      chatUI.resetForm(event);
+      chatUI.clearChatInput();
+      await loadConversation();
     } else {
       chatUI.showSendMessage(`Error: ${response.error || "Unknown error"}`);
     }

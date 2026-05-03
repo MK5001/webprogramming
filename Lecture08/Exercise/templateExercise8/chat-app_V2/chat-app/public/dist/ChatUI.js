@@ -36,7 +36,9 @@ export class ChatUI {
             sendForm.addEventListener("submit", (event) => this.handleSendMessage(event));
         }
     }
+    // --------------------------------------------------------------------------
     // Task 1: Handle Register
+    // --------------------------------------------------------------------------
     handleRegister(event) {
         return __awaiter(this, void 0, void 0, function* () {
             event.preventDefault();
@@ -69,7 +71,9 @@ export class ChatUI {
             }
         });
     }
+    // --------------------------------------------------------------------------
     // Task 2: Handle Login
+    // --------------------------------------------------------------------------
     handleLogin(event) {
         return __awaiter(this, void 0, void 0, function* () {
             event.preventDefault();
@@ -101,7 +105,9 @@ export class ChatUI {
             }
         });
     }
+    // --------------------------------------------------------------------------
     // Task 3: Get Users
+    // --------------------------------------------------------------------------
     handleGetUsers() {
         return __awaiter(this, void 0, void 0, function* () {
             const usersList = document.getElementById("usersList");
@@ -135,7 +141,9 @@ export class ChatUI {
             }
         });
     }
+    // --------------------------------------------------------------------------
     // Task 4: Send Message
+    // --------------------------------------------------------------------------
     handleSendMessage(event) {
         return __awaiter(this, void 0, void 0, function* () {
             event.preventDefault();

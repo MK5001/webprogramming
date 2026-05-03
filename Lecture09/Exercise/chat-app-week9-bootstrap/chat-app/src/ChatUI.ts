@@ -1,6 +1,6 @@
 ﻿// src/ChatUI.ts
 
-import type { User } from "./ApiService.js";
+import type { User, ChatMessage } from "./ApiService.js";
 
 export interface RegisterFormData {
   name: string;
@@ -12,12 +12,6 @@ export interface RegisterFormData {
 export interface LoginFormData {
   usernameOrEmail: string;
   password: string;
-}
-
-export interface MessageFormData {
-  senderId: string;
-  receiverId: string;
-  message: string;
 }
 
 export class ChatUI {
@@ -65,12 +59,15 @@ export class ChatUI {
     };
   }
 
-  getMessageFormData(): MessageFormData {
-    return {
-      senderId: (document.getElementById("senderId") as HTMLInputElement).value.trim(),
-      receiverId: (document.getElementById("receiverId") as HTMLInputElement).value.trim(),
-      message: (document.getElementById("messageText") as HTMLInputElement).value.trim(),
-    };
+  getChatMessageText(): string {
+    return (document.getElementById("messageText") as HTMLInputElement).value.trim();
+  }
+
+  clearChatInput() {
+    const messageInput = document.getElementById("messageText") as HTMLInputElement;
+    if (messageInput) {
+      messageInput.value = "";
+    }
   }
 
   showRegisterMessage(message: string) {
@@ -97,18 +94,21 @@ export class ChatUI {
   showUsersLoading() {
     const usersList = document.getElementById("usersList");
     if (usersList) {
-      usersList.innerHTML = "Loading users...";
+      usersList.innerHTML = `<li class="list-group-item text-muted">Loading users...</li>`;
     }
   }
 
-  showUsers(users: User[]) {
+  showUsers(users: User[], onUserClick: (user: User) => void) {
     const usersList = document.getElementById("usersList");
     if (!usersList) return;
 
     usersList.innerHTML = "";
     users.forEach((user: User) => {
       const li = document.createElement("li");
-      li.textContent = `User: ${user.name} (ID: ${user.id}), group: ${user.group_id}`;
+      li.className = "list-group-item list-group-item-action";
+      li.style.cursor = "pointer";
+      li.textContent = `${user.name} - Gruppe ${user.group_id}`;
+      li.addEventListener("click", () => onUserClick(user));
       usersList.appendChild(li);
     });
   }
@@ -116,8 +116,57 @@ export class ChatUI {
   showUsersError(message: string) {
     const usersList = document.getElementById("usersList");
     if (usersList) {
-      usersList.innerHTML = message;
+      usersList.innerHTML = `<li class="list-group-item text-danger">${message}</li>`;
     }
+  }
+
+  showChatTitle(user: User) {
+    const chatTitle = document.getElementById("chatTitle");
+    if (chatTitle) {
+      chatTitle.textContent = `Chat mit ${user.name}`;
+    }
+  }
+
+  showChatLoading() {
+    const chatMessages = document.getElementById("chatMessages");
+    if (chatMessages) {
+      chatMessages.innerHTML = `<div class="text-muted">Chat wird geladen...</div>`;
+    }
+  }
+
+  showConversation(messages: ChatMessage[], currentUserId: string) {
+    const chatMessages = document.getElementById("chatMessages");
+    if (!chatMessages) return;
+
+    chatMessages.innerHTML = "";
+
+    messages.forEach((msg) => {
+      const isOwnMessage = msg.sender_id === currentUserId;
+
+      const wrapper = document.createElement("div");
+      wrapper.className = `d-flex mb-2 ${isOwnMessage ? "justify-content-end" : "justify-content-start"}`;
+
+      const bubble = document.createElement("div");
+      bubble.className = `p-2 rounded shadow-sm ${isOwnMessage ? "bg-primary text-white" : "bg-white border"}`;
+      bubble.style.maxWidth = "70%";
+
+      const text = document.createElement("div");
+      text.textContent = msg.message;
+
+      bubble.appendChild(text);
+
+      if (msg.timestamp) {
+        const time = document.createElement("small");
+        time.className = isOwnMessage ? "d-block text-white-50 mt-1" : "d-block text-muted mt-1";
+        time.textContent = new Date(msg.timestamp * 1000).toLocaleString();
+        bubble.appendChild(time);
+      }
+
+      wrapper.appendChild(bubble);
+      chatMessages.appendChild(wrapper);
+    });
+
+    chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
   resetForm(event: Event) {
