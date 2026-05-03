@@ -102,9 +102,6 @@ export class ApiService {
             const url = `${BASE_URL}/send_message.php`;
             const resp = yield fetch(url, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
                 body: JSON.stringify({
                     token: this.token,
                     sender_id: senderId,

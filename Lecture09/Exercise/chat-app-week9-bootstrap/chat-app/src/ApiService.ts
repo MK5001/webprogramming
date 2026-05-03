@@ -143,27 +143,24 @@ static async loginUser(usernameOrEmail: string, password: string): Promise<ApiRe
   
   
     // 4) Send Message
-static async sendMessage(
-  senderId: string,
-  receiverId: string,
-  message: string
-): Promise<ApiResponse> {
-  const url = `${BASE_URL}/send_message.php`;
+  static async sendMessage(
+    senderId: string,
+    receiverId: string,
+    message: string
+  ): Promise<ApiResponse> {
+    const url = `${BASE_URL}/send_message.php`;
 
-  const resp = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      token: this.token,
-      sender_id: senderId,
-      receiver_id: receiverId,
-      message: message,
-    }),
-  });
+    const resp = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
+        token: this.token,
+        sender_id: senderId,
+        receiver_id: receiverId,
+        message: message,
+      }),
+    });
 
-  return resp.json();
-}
+    return resp.json();
+  }
 }
   
