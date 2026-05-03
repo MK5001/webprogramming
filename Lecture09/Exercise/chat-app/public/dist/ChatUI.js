@@ -118,16 +118,9 @@ export class ChatUI {
             const text = document.createElement("div");
             text.textContent = msg.message;
             bubble.appendChild(text);
-            if (msg.timestamp) {
-                const time = document.createElement("small");
-                time.className = isOwnMessage ? "d-block text-white-50 mt-1" : "d-block text-muted mt-1";
-                time.textContent = new Date(msg.timestamp * 1000).toLocaleString();
-                bubble.appendChild(time);
-            }
             wrapper.appendChild(bubble);
             chatMessages.appendChild(wrapper);
         });
-        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
     resetForm(event) {
         event.target.reset();
