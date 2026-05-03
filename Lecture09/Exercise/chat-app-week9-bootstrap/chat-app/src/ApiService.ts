@@ -152,6 +152,9 @@ static async loginUser(usernameOrEmail: string, password: string): Promise<ApiRe
 
     const resp = await fetch(url, {
       method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+        },
       body: JSON.stringify({
         token: this.token,
         sender_id: senderId,
