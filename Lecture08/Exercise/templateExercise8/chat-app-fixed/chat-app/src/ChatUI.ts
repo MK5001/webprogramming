@@ -87,7 +87,7 @@ export class ChatUI {
         StateManager.setToken(response.token);
 
         if (loginResultDiv) {
-          loginResultDiv.textContent = `Login successful! Token: ${response.token}`;
+          loginResultDiv.textContent = `Login successful! Token: ${response.token} User ID: ${response.id}`;
         }
         (event.target as HTMLFormElement).reset();
       } else {
